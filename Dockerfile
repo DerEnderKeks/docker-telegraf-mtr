@@ -15,6 +15,8 @@ LABEL maintainer="DerEnderKeks"
 
 COPY --from=builder /tmp/mtr/mtr /tmp/mtr/mtr-packet /usr/sbin/
 
-RUN apk add --no-cache libcap
+RUN apk add --no-cache dumb-init libcap 
 RUN setcap cap_net_raw+ep /usr/sbin/mtr-packet
 RUN apk del libcap
+
+ENTRYPOINT ["/usr/bin/dumb-init", "--", "/entrypoint.sh"]
